@@ -21,7 +21,7 @@ namespace SimpleVectorGraphicViewer.Models
 
         [XmlElement("c")]
         [DataMember(Name = "c")]
-        public string C { get; set; } = null; // Triangle
+        public string C { get; set; } // Triangle
 
         [XmlElement("color")]
         [DataMember(Name = "color")]
