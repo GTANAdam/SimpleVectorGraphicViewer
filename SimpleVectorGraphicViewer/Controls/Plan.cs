@@ -30,6 +30,7 @@ namespace SimpleVectorGraphicViewer
         private Cursor CurrentCursor = Cursors.Default;
 
         private float ViewHeight;
+        private bool singlePointUpdate;
 
         public Plan()
         {
@@ -114,9 +115,10 @@ namespace SimpleVectorGraphicViewer
             e.Graphics.TranslateTransform(width, height);
 
             // Render only hovered-on point
-            if (HoveredOn != null) 
+            if (HoveredOn != null && singlePointUpdate) 
             {
                 e.Graphics.FillEllipse(Brushes.Black, HoveredOn.Coord.Scale().ToPlan());
+                singlePointUpdate = false;
                 return;
             }
 
@@ -276,6 +278,7 @@ namespace SimpleVectorGraphicViewer
             {
                 var absolutePoint = ConvertPoint(ptr.Coord.Scale(), CoordinateSpace.Device, CoordinateSpace.World);
                 var roundedRect = System.Drawing.Rectangle.Round(absolutePoint.ToRect(6));
+                singlePointUpdate = true;
                 Invalidate(roundedRect);
             }
 
