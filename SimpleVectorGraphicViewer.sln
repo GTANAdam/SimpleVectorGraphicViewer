@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleVectorGraphicViewer", "SimpleVectorGraphicViewer\SimpleVectorGraphicViewer.csproj", "{7BDD4A09-52F0-4E00-A4C8-19AD37DBD0D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleVectorGraphicViewer.Tests", "SimpleVectorGraphicViewer.Tests\SimpleVectorGraphicViewer.Tests.csproj", "{763A7502-517C-49EF-A14A-105E174D06D1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7BDD4A09-52F0-4E00-A4C8-19AD37DBD0D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BDD4A09-52F0-4E00-A4C8-19AD37DBD0D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BDD4A09-52F0-4E00-A4C8-19AD37DBD0D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BDD4A09-52F0-4E00-A4C8-19AD37DBD0D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{763A7502-517C-49EF-A14A-105E174D06D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{763A7502-517C-49EF-A14A-105E174D06D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{763A7502-517C-49EF-A14A-105E174D06D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{763A7502-517C-49EF-A14A-105E174D06D1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {856E5188-50AB-48EE-B451-0885F15B22BD}
+	EndGlobalSection
+EndGlobal
