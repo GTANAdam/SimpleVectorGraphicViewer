@@ -2,6 +2,13 @@
 
 > Challenge task to implement a simple vector graphic viewer
 
+
+<br>
+<p align="center">
+    <img src="https://i.imgur.com/BgQqmUU.png" width="500px"/>
+</p>
+
+
 ## Getting Started
 
 ### Dependencies
