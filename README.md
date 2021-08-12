@@ -13,7 +13,7 @@
 
 ### Dependencies
 
-* .NET Framework 4.5
+* .NET Framework 4.5+
 
 ### Executing program
 
