@@ -13,13 +13,13 @@ namespace SimpleVectorGraphicViewer.Serialization.Serializers
         /// <typeparam name="T"></typeparam>
         /// <param name="data"></param>
         /// <returns>T</returns>
-        T ISerializer.Deserialize<T>(string data) where T : class
+        T ISerializer.Deserialize<T>(string data)
         {
             if (string.IsNullOrWhiteSpace(data)) return null;
 
             try
             {
-                var ms = new MemoryStream(Encoding.UTF8.GetBytes(data));
+                using var ms = new MemoryStream(Encoding.UTF8.GetBytes(data));
                 var ser = new DataContractJsonSerializer(typeof(T));
                 var result = ser.ReadObject(ms) as T;
                 ms.Close();
@@ -42,7 +42,7 @@ namespace SimpleVectorGraphicViewer.Serialization.Serializers
         {
             if (obj == null) throw new Exception("obj can't be null");
 
-            var ms = new MemoryStream();
+            using var ms = new MemoryStream();
             var ser = new DataContractJsonSerializer(typeof(T));
             ser.WriteObject(ms, obj);
             byte[] json = ms.ToArray();
@@ -61,7 +61,7 @@ namespace SimpleVectorGraphicViewer.Serialization.Serializers
         {
             try
             {
-                var ms = new MemoryStream(Encoding.UTF8.GetBytes(data));
+                using var ms = new MemoryStream(Encoding.UTF8.GetBytes(data));
                 var ser = new DataContractJsonSerializer(typeof(T));
                 result = (T)ser.ReadObject(ms);
                 ms.Close();
@@ -80,7 +80,7 @@ namespace SimpleVectorGraphicViewer.Serialization.Serializers
         /// <returns></returns>
         public string Serialize<T>(ref T obj) where T : struct
         {
-            var ms = new MemoryStream();
+            using var ms = new MemoryStream();
             var ser = new DataContractJsonSerializer(typeof(T));
             ser.WriteObject(ms, obj);
             byte[] json = ms.ToArray();
