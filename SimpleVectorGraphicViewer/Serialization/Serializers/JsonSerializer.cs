@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.Runtime.Serialization.Json;
+using System.Text;
 
 namespace SimpleVectorGraphicViewer.Serialization.Serializers
 {
@@ -16,7 +19,12 @@ namespace SimpleVectorGraphicViewer.Serialization.Serializers
 
             try
             {
-                return SimpleJson.SimpleJson.DeserializeObject<T>(data);
+                var ms = new MemoryStream(Encoding.UTF8.GetBytes(data));
+                var ser = new DataContractJsonSerializer(typeof(T));
+                var result = ser.ReadObject(ms) as T;
+                ms.Close();
+
+                return result;
             }
             catch (Exception ex)
             {
@@ -33,7 +41,14 @@ namespace SimpleVectorGraphicViewer.Serialization.Serializers
         string ISerializer.Serialize<T>(T obj) where T : class
         {
             if (obj == null) throw new Exception("obj can't be null");
-            return SimpleJson.SimpleJson.SerializeObject(obj);
+
+            var ms = new MemoryStream();
+            var ser = new DataContractJsonSerializer(typeof(T));
+            ser.WriteObject(ms, obj);
+            byte[] json = ms.ToArray();
+            ms.Close();
+
+            return Encoding.UTF8.GetString(json, 0, json.Length);
         }
 
         /// <summary>
@@ -46,7 +61,10 @@ namespace SimpleVectorGraphicViewer.Serialization.Serializers
         {
             try
             {
-                result = SimpleJson.SimpleJson.DeserializeObject<T>(data);
+                var ms = new MemoryStream(Encoding.UTF8.GetBytes(data));
+                var ser = new DataContractJsonSerializer(typeof(T));
+                result = (T)ser.ReadObject(ms);
+                ms.Close();
             }
             catch (Exception ex)
             {
@@ -62,7 +80,13 @@ namespace SimpleVectorGraphicViewer.Serialization.Serializers
         /// <returns></returns>
         public string Serialize<T>(ref T obj) where T : struct
         {
-            return SimpleJson.SimpleJson.SerializeObject(obj);
+            var ms = new MemoryStream();
+            var ser = new DataContractJsonSerializer(typeof(T));
+            ser.WriteObject(ms, obj);
+            byte[] json = ms.ToArray();
+            ms.Close();
+
+            return Encoding.UTF8.GetString(json, 0, json.Length);
         }
     }
 }

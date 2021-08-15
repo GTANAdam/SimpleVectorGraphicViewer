@@ -87,7 +87,6 @@
     <Compile Include="Utils.Extensions\GraphicsExtensions.cs" />
     <Compile Include="Utils.Extensions\PrimitiveListExtensions.cs" />
     <Compile Include="Utils.Extensions\RectangleExtensions.cs" />
-    <Compile Include="Utils.Libriaries\SimpleJson.cs" />
     <Compile Include="Utils.Wrappers\MessageBoxEx.cs" />
     <EmbeddedResource Include="Forms\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
@@ -129,5 +128,5 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-   </Target>
+  </Target>
 </Project>

@@ -57,7 +57,7 @@ namespace SimpleVectorGraphicViewer.Models.Primitives
 
             float dx = pt.X - circle.Center.X;
             float dy = pt.Y - circle.Center.Y;
-            return (dx * dx + dy * dy <= circle.Radius * circle.Radius);
+            return dx * dx + dy * dy <= circle.Radius * circle.Radius;
         }
 
         /// <summary>
