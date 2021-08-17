@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using SimpleVectorGraphicViewer.Serialization;
 using SimpleVectorGraphicViewer.Serialization.Serializers;
@@ -76,10 +77,24 @@ namespace SimpleVectorGraphicViewer
                     default: throw new Exception("Unsupported serializer");
                 }
 
-                // Read the contents of the file into a stream
-                using var reader = new StreamReader(openFileDialog.OpenFile());
-                plot1.Primitives = Serialization.Parsers.Parser.ParseData(serializer, await reader.ReadToEndAsync().ConfigureAwait(false));
-                plot1.Invalidate();
+                await Task.Run(() =>
+                {
+                    // Read the contents of the file into a stream
+                    using var reader = new StreamReader(openFileDialog.OpenFile());
+                    var primitives = Serialization.Parsers.Parser.ParseData(serializer, reader.ReadToEnd());
+
+                    try
+                    {
+                        plot1.RWL.AcquireWriterLock(100);
+                        plot1.Primitives = primitives;
+                    }
+                    finally
+                    {
+                        plot1.RWL.ReleaseWriterLock();
+                    }
+
+                    this.UIThread(() => plot1.Invalidate());
+                });
             }
         }
 

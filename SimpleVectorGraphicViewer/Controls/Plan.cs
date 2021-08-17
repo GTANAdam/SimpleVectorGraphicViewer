@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing.Drawing2D;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -9,12 +9,14 @@ using SimpleVectorGraphicViewer.Utils.Extensions;
 using SimpleVectorGraphicViewer.Models;
 using SimpleVectorGraphicViewer.Models.Primitives;
 using Rectangle = SimpleVectorGraphicViewer.Models.Primitives.Rectangle;
+using System.Threading;
 
 namespace SimpleVectorGraphicViewer
 {
     public class Plan : Control
     {
         internal List<Primitive> Primitives = new();
+        internal ReaderWriterLock RWL = new();
 
         internal static float UNIT_BLOCK_SIZE = 25;
         private static readonly System.Drawing.Rectangle PointRect = new(-3, -3, 6, 6);
@@ -68,17 +70,26 @@ namespace SimpleVectorGraphicViewer
             var tria = new Triangle(a: new PointF(6, 8), b: new PointF(3, 3), c: new PointF(9, 3), filled: false, color: Color.Green);
             var rect = new Rectangle(a: new PointF(-9, 8), b: new PointF(-3, 3), filled: false, color: Color.Red);
 
-            Primitives.Clear();
+            try
+            {
+                RWL.AcquireWriterLock(100);
 
-            Primitives.Add(line);
-            Primitives.Add(line2);
-            Primitives.Add(rect);
-            Primitives.Add(circle);
-            Primitives.Add(tria);
+                Primitives.Clear();
 
-            Primitives.Add(2, 3, Color.Green);
-            Primitives.Add(-3, 1, Color.Red);
-            Primitives.Add(-1.5f, -2.5f, Color.Blue);
+                Primitives.Add(line);
+                Primitives.Add(line2);
+                Primitives.Add(rect);
+                Primitives.Add(circle);
+                Primitives.Add(tria);
+
+                Primitives.Add(2, 3, Color.Green);
+                Primitives.Add(-3, 1, Color.Red);
+                Primitives.Add(-1.5f, -2.5f, Color.Blue);
+            }
+            finally
+            {
+                RWL.ReleaseWriterLock();
+            }
 
             Invalidate();
         }
@@ -190,19 +201,23 @@ namespace SimpleVectorGraphicViewer
             e.Graphics.FillEllipse(Brushes.Magenta, PointRect);
             e.Graphics.DrawString("(0,0)", MinorFont, Brushes.Magenta, new PointF(UNIT_BLOCK_SIZE/17, UNIT_BLOCK_SIZE/-1.4f));
 
-            // Draw points
-            foreach (var basePrimitive in Primitives)
+            try
             {
-                using var brush = new SolidBrush(basePrimitive.Color);
-                using var pen = new Pen(brush, 1.5f);
+                RWL.AcquireReaderLock(100);
 
-                basePrimitive.Render(e.Graphics, pen, brush);
+                // Draw points
+                foreach (var basePrimitive in Primitives)
+                {
+                    using var brush = new SolidBrush(basePrimitive.Color);
+                    using var pen = new Pen(brush, 1.5f);
+
+                    basePrimitive.Render(e.Graphics, pen, brush);
+                }
+            } 
+            finally
+            {
+                RWL.ReleaseReaderLock();
             }
-
-            BigArrow?.Dispose();
-            AxisXPen?.Dispose();
-            AxisYPen?.Dispose();
-            MinorPen?.Dispose();
             MinorFont?.Dispose();
         }
 
