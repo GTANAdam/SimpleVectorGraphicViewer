@@ -20,13 +20,7 @@ namespace SimpleVectorGraphicViewer
 
         internal static float UNIT_BLOCK_SIZE = 25;
         private static readonly System.Drawing.Rectangle PointRect = new(-3, -3, 6, 6);
-
-        private static Pen AxisXPen;
-        private static Pen AxisYPen;
-        private static Pen MinorPen;
-
-        internal static Font MinorFont;
-        private static AdjustableArrowCap BigArrow;
+        private static readonly Pen MinorPen = new(Color.Gray, 0.25f) { DashStyle = DashStyle.Dot };
 
         private Models.Primitives.Point HoveredOn;
         private Cursor CurrentCursor = Cursors.Default;
@@ -109,11 +103,10 @@ namespace SimpleVectorGraphicViewer
 
             UNIT_BLOCK_SIZE = 20 * ViewHeight / res;
 
-            MinorFont = new(FontFamily.GenericSansSerif, UNIT_BLOCK_SIZE / 3);
-            BigArrow = new(UNIT_BLOCK_SIZE / 5, UNIT_BLOCK_SIZE / 8);
-            AxisXPen = new(Color.Black, 1.5f) { CustomEndCap = BigArrow };
-            AxisYPen = new(Color.Black, 1.5f) { CustomStartCap = BigArrow };
-            MinorPen = new(Color.Gray, 0.25f) { DashStyle = DashStyle.Dot };
+            using var MinorFont = new Font(FontFamily.GenericSansSerif, UNIT_BLOCK_SIZE / 3);
+            using var BigArrow = new AdjustableArrowCap(UNIT_BLOCK_SIZE / 5, UNIT_BLOCK_SIZE / 8);
+            using var AxisXPen = new Pen(Color.Black, 1.5f) { CustomEndCap = BigArrow };
+            using var AxisYPen = new Pen(Color.Black, 1.5f) { CustomStartCap = BigArrow };
 
             // Calculate width/height
             var width = ClientSize.Width / 2;
@@ -218,7 +211,6 @@ namespace SimpleVectorGraphicViewer
             {
                 RWL.ReleaseReaderLock();
             }
-            MinorFont?.Dispose();
         }
 
         /// <summary>
