@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SimpleVectorGraphicViewer.Serialization;
 using SimpleVectorGraphicViewer.Serialization.Serializers;
+using SimpleVectorGraphicViewer.Utils.Extensions;
 using SimpleVectorGraphicViewer.Utils.Wrappers;
 
 namespace SimpleVectorGraphicViewer

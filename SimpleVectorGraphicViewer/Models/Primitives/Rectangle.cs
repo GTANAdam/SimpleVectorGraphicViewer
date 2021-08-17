@@ -1,23 +1,29 @@
-﻿using System;
+using System;
 using System.Drawing;
 using SimpleVectorGraphicViewer.Utils.Extensions;
 
 namespace SimpleVectorGraphicViewer.Models.Primitives
 {
-    public sealed class Rectangle : Line
+    public sealed class Rectangle : Primitive
     {
         internal Rectangle() { }
 
+        private PointF A { get; set; }
+        private PointF B { get; set; }
+
         /// <summary>
-        /// Rectangle constructor
+        /// Rectangle constructor taking 2 points
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <param name="color"></param>
         /// <param name="filled"></param>
-        internal Rectangle(PointF a, PointF b, Color? color = null, bool filled = false) : base(a, b, color)
+        internal Rectangle(PointF a, PointF b, Color? color = null, bool filled = false)
         {
+            A = a;
+            B = b;
             Filled = filled;
+            Color = color ?? Color.Black;
         }
 
         /// <summary>

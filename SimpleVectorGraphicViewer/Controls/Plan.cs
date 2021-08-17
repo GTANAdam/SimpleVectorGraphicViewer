@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Drawing.Drawing2D;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -62,7 +62,7 @@ namespace SimpleVectorGraphicViewer
 
             var circle = new Circle(center: new PointF(6, -6), radius: 3f, filled: false, color: Color.Chocolate);
             var tria = new Triangle(a: new PointF(6, 8), b: new PointF(3, 3), c: new PointF(9, 3), filled: false, color: Color.Green);
-            var rect = new Rectangle(a: new PointF(-9, 8), b: new PointF(-3, 3), filled: false, color: Color.Red);
+            var rect = new Rectangle(a: new PointF(-6, 8), b: new PointF(-3.5f, 5.5f), c: new PointF(-6, 3), d: new PointF(-8.5f, 5.5f), filled: false, color: Color.Red);
 
             try
             {
@@ -121,7 +121,7 @@ namespace SimpleVectorGraphicViewer
             // Render only hovered-on point
             if (HoveredOn != null && singlePointUpdate) 
             {
-                e.Graphics.FillEllipse(Brushes.Black, HoveredOn.Coord.Scale().ToPlan());
+                e.Graphics.FillEllipse(Brushes.Black, HoveredOn.Scale().ToPlan());
                 singlePointUpdate = false;
                 return;
             }
@@ -283,7 +283,7 @@ namespace SimpleVectorGraphicViewer
 
             void InvalidatePoint(Models.Primitives.Point ptr)
             {
-                var absolutePoint = ConvertPoint(ptr.Coord.Scale(), CoordinateSpace.Device, CoordinateSpace.World);
+                var absolutePoint = ConvertPoint(ptr.Scale(), CoordinateSpace.Device, CoordinateSpace.World);
                 var roundedRect = System.Drawing.Rectangle.Round(absolutePoint.ToRect(6));
                 singlePointUpdate = true;
                 Invalidate(roundedRect);
@@ -294,14 +294,14 @@ namespace SimpleVectorGraphicViewer
             {
                 if (HoveredOn != null && HoveredOn.Enabled)
                 {
-                    HoveredOn.Enabled = false;
+                    HoveredOn.Toggle();
                     InvalidatePoint(HoveredOn);
                     HoveredOn = null;
                 }
             }
             else if (!ptr.Enabled)
             {
-                ptr.Enabled = true;
+                ptr.Toggle();
                 HoveredOn = ptr;
                 InvalidatePoint(HoveredOn);
             } else

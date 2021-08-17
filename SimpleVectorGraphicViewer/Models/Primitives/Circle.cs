@@ -5,8 +5,8 @@ namespace SimpleVectorGraphicViewer.Models.Primitives
 {
     public class Circle : Primitive
     {
-        public PointF Center { get; set; }
-        public float Radius { get; set; }
+        private PointF Center { get; set; }
+        private float Radius { get; set; }
 
         internal Circle() { }
 
@@ -43,21 +43,13 @@ namespace SimpleVectorGraphicViewer.Models.Primitives
         /// </summary>
         /// <param name="point">Point</param>
         /// <returns>bool</returns>
-        internal override bool IsPointWithin(PointF point) => IsPointWithin(point, this);
-
-        /// <summary>
-        /// Checks if point is within the primitive
-        /// </summary>
-        /// <param name="point">Point</param>
-        /// <param name="circle">Rectangle</param>
-        /// <returns>bool</returns>
-        internal static bool IsPointWithin(PointF point, Circle circle)
+        internal override bool IsPointWithin(PointF point)
         {
             var pt = point.Relative();
 
-            float dx = pt.X - circle.Center.X;
-            float dy = pt.Y - circle.Center.Y;
-            return dx * dx + dy * dy <= circle.Radius * circle.Radius;
+            float dx = pt.X - Center.X;
+            float dy = pt.Y - Center.Y;
+            return dx * dx + dy * dy <= Radius * Radius;
         }
 
         /// <summary>

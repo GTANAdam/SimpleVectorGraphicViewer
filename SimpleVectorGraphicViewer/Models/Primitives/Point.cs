@@ -6,9 +6,8 @@ namespace SimpleVectorGraphicViewer.Models.Primitives
 {
     public sealed class Point : Primitive
     {
-        public PointF Coord { get; set; }
-        public float Size { get; set; }
-        public bool Enabled { get; set; }
+        private PointF Coord { get; set; }
+        internal bool Enabled { get; private set; }
 
         internal Point() { }
 
@@ -36,15 +35,6 @@ namespace SimpleVectorGraphicViewer.Models.Primitives
         }
 
         /// <summary>
-        /// Returns relative position of the point to the graph
-        /// </summary>
-        /// <returns>PointF</returns>
-        internal PointF Relative()
-        {
-            return new PointF(Coord.X / Plan.UNIT_BLOCK_SIZE, Coord.Y / -Plan.UNIT_BLOCK_SIZE);
-        }
-
-        /// <summary>
         /// Returns Point coordinates
         /// </summary>
         /// <returns>string</returns>
@@ -55,16 +45,6 @@ namespace SimpleVectorGraphicViewer.Models.Primitives
         }
 
         /// <summary>
-        /// Calculates distance from point to point
-        /// </summary>
-        /// <param name="point"></param>
-        /// <returns>double</returns>
-        internal double DistanceTo(PointF point)
-        {
-            return Coord.DistanceTo(point);
-        }
-
-        /// <summary>
         /// Renders primitive on Graphics handle
         /// </summary>
         /// <param name="graphics"></param>
@@ -72,15 +52,17 @@ namespace SimpleVectorGraphicViewer.Models.Primitives
         /// <param name="brush"></param>
         internal override void Render(Graphics graphics, Pen pen, Brush brush = null)
         {
+            using var minorFont = new Font(FontFamily.GenericSansSerif, Plan.UNIT_BLOCK_SIZE / 3);
             var scaledPoint = Coord.Scale();
 
             //pen.Width = 1.5f;
             pen.DashStyle = DashStyle.Dash;
 
-            var str = ToString();
-            var resMes = graphics.MeasureString(str, Plan.MinorFont);
 
-            graphics.DrawString(str, Plan.MinorFont, brush, new PointF(scaledPoint.X - resMes.Width / 2, 
+            var str = ToString();
+            var resMes = graphics.MeasureString(str, minorFont);
+
+            graphics.DrawString(str, minorFont, brush, new PointF(scaledPoint.X - resMes.Width / 2, 
                 scaledPoint.Y + (scaledPoint.Y < 0 
                 ? Plan.UNIT_BLOCK_SIZE / -1.4f 
                 : Plan.UNIT_BLOCK_SIZE / 5)));
@@ -88,6 +70,26 @@ namespace SimpleVectorGraphicViewer.Models.Primitives
             graphics.DrawLine(pen, 0, scaledPoint.Y, scaledPoint.X, scaledPoint.Y); // Draw X-Axis
             graphics.DrawLine(pen, scaledPoint.X, 0, scaledPoint.X, scaledPoint.Y); // Draw Y-Axis
             graphics.FillEllipse(brush, scaledPoint.ToPlan());
+        }
+
+        /// <summary>
+        /// Toggles Enabled property
+        /// </summary>
+        internal void Toggle()
+        {
+            Enabled = !Enabled;
+        }
+
+        internal PointF Scale() => Coord.Scale();
+
+        /// <summary>
+        /// Calculates distance from point to point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns>double</returns>
+        internal double DistanceTo(PointF point)
+        {
+            return Coord.DistanceTo(point);
         }
     }
 }

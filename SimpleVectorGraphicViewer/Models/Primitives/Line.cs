@@ -6,8 +6,9 @@ namespace SimpleVectorGraphicViewer.Models
 {
     public class Line : Primitive
     {
-        public PointF A { get; set; }
-        public PointF B { get; set; }
+        private PointF A { get; set; }
+        private PointF B { get; set; }
+
         internal Line() { }
 
         /// <summary>
@@ -40,21 +41,14 @@ namespace SimpleVectorGraphicViewer.Models
         /// </summary>
         /// <param name="point"></param>
         /// <returns>bool</returns>
-        internal override bool IsPointWithin(PointF point) => IsPointWithin(point, this);
-
-        /// <summary>
-        /// Checks if point within primitive
-        /// </summary>
-        /// <param name="pts"></param>
-        /// <param name="line"></param>
-        /// <param name="t"></param>
-        /// <returns>bool</returns>
-        internal static bool IsPointWithin(PointF pts, Line line, float t = 1E-03f)
+        internal override bool IsPointWithin(PointF pts)
         {
-            var a = line.A;
-            var b = line.B;
+            const float t = 1E-03f;
+
+            var a = A;
+            var b = B;
             var pt = pts.Relative();
-            var p = new PointF((float)Math.Round(pt.X), (float)Math.Round(pt.Y));
+            var p = new PointF((float)System.Math.Round(pt.X), (float)System.Math.Round(pt.Y));
 
             // ensure points are collinear
             var zero = (b.X - a.X) * (p.Y - a.Y) - (p.X - a.X) * (b.Y - a.Y);
