@@ -51,11 +51,10 @@ namespace SimpleVectorGraphicViewer.Models.Primitives
         /// <returns>string</returns>
         public override string ToString()
         {
-            return $"Type: {GetType().Name}\n" +
-                    $"A: {A}\n" +
-                    $"B: {B}\n" +
-                    $"Color: {Color.A}; {Color.R}; {Color.G}; {Color.B} {(Color.IsNamedColor ? $"({Color.Name})" : "")}\n" +
-                    $"Filled: {Filled}";
+            var res = $"Type: {GetType().Name}\nA: {A}\nB: {B}\n";
+            if (!C.IsEmpty && !D.IsEmpty) res += $"C: {C}\nD: {D}\n";
+            res += $"Color: {Color.A}; {Color.R}; {Color.G}; {Color.B} {(Color.IsNamedColor ? $"({Color.Name})" : "")}\nFilled: {Filled}";
+            return res;
         }
 
         /// <summary>
@@ -68,6 +67,7 @@ namespace SimpleVectorGraphicViewer.Models.Primitives
             if (C.IsEmpty && D.IsEmpty)
                 return GetRectangle().Contains(point);
 
+            // If Rhombus
             var a = A.Scale();
             var b = B.Scale();
             var AB = Vector.New(a, b);
@@ -93,7 +93,7 @@ namespace SimpleVectorGraphicViewer.Models.Primitives
                 graphics.DrawRectangles(pen, new RectangleF[] { rect });
                 if (Filled) graphics.FillRectangle(brush, rect);
             }
-            else
+            else // If Rhombus
             {
                 using var path = new GraphicsPath();
                 path.StartFigure();

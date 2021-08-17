@@ -63,6 +63,7 @@ namespace SimpleVectorGraphicViewer
             var circle = new Circle(center: new PointF(6, -6), radius: 3f, filled: false, color: Color.Chocolate);
             var tria = new Triangle(a: new PointF(6, 8), b: new PointF(3, 3), c: new PointF(9, 3), filled: false, color: Color.Green);
             var rect = new Rectangle(a: new PointF(-6, 8), b: new PointF(-3.5f, 5.5f), c: new PointF(-6, 3), d: new PointF(-8.5f, 5.5f), filled: false, color: Color.Red);
+            var rect2 = new Rectangle(a: new PointF(-13, 12), b: new PointF(-9, 9), filled: false, color: Color.Red);
 
             try
             {
@@ -73,6 +74,8 @@ namespace SimpleVectorGraphicViewer
                 Primitives.Add(line);
                 Primitives.Add(line2);
                 Primitives.Add(rect);
+                Primitives.Add(rect2);
+
                 Primitives.Add(circle);
                 Primitives.Add(tria);
 

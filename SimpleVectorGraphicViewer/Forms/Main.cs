@@ -87,7 +87,8 @@ namespace SimpleVectorGraphicViewer
                     try
                     {
                         plot1.RWL.AcquireWriterLock(100);
-                        plot1.Primitives = primitives;
+                        plot1.Primitives.Clear();
+                        plot1.Primitives.AddRange(primitives);
                     }
                     finally
                     {
