@@ -15,13 +15,13 @@ namespace SimpleVectorGraphicViewer.Serialization.Serializers
         /// <returns>T</returns>
         T ISerializer.Deserialize<T>(string data)
         {
-            if (string.IsNullOrWhiteSpace(data)) return null;
+            if (string.IsNullOrWhiteSpace(data)) new ArgumentNullException();
 
             try
             {
                 using var ms = new MemoryStream(Encoding.UTF8.GetBytes(data));
                 var ser = new DataContractJsonSerializer(typeof(T));
-                var result = ser.ReadObject(ms) as T;
+                var result = (T)ser.ReadObject(ms);
                 ms.Close();
 
                 return result;
@@ -38,48 +38,10 @@ namespace SimpleVectorGraphicViewer.Serialization.Serializers
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns>string</returns>
-        string ISerializer.Serialize<T>(T obj) where T : class
+        string ISerializer.Serialize<T>(T obj)
         {
             if (obj == null) throw new Exception("obj can't be null");
 
-            using var ms = new MemoryStream();
-            var ser = new DataContractJsonSerializer(typeof(T));
-            ser.WriteObject(ms, obj);
-            byte[] json = ms.ToArray();
-            ms.Close();
-
-            return Encoding.UTF8.GetString(json, 0, json.Length);
-        }
-
-        /// <summary>
-        /// Deserialize data, where the out data is a reference to a struct
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="data"></param>
-        /// <param name="result"></param>
-        public void Deserialize<T>(string data, out T result) where T : struct
-        {
-            try
-            {
-                using var ms = new MemoryStream(Encoding.UTF8.GetBytes(data));
-                var ser = new DataContractJsonSerializer(typeof(T));
-                result = (T)ser.ReadObject(ms);
-                ms.Close();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        /// <summary>
-        /// Serialize data, where the parameter is a reference to a struct
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public string Serialize<T>(ref T obj) where T : struct
-        {
             using var ms = new MemoryStream();
             var ser = new DataContractJsonSerializer(typeof(T));
             ser.WriteObject(ms, obj);
